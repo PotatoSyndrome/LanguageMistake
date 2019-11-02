@@ -2,8 +2,8 @@ import java.util.HashMap;
 
 public class LanguageChanger {
 
-    HashMap<Character,Character> ukrainianToEnglish;
-    HashMap<Character,Character> englishToUkrainian;
+    private HashMap<Character,Character> ukrainianToEnglish;
+    private HashMap<Character,Character> englishToUkrainian;
 
     public LanguageChanger() {
         ukrainianToEnglish = new HashMap<>();
