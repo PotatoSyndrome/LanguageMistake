@@ -3,6 +3,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+
 public class AnswerWindow {
 
     private static final int WINDOWWIDTH = 200;
@@ -26,4 +27,5 @@ public class AnswerWindow {
         window.setScene(scene);
         window.show();
     }
+
 }

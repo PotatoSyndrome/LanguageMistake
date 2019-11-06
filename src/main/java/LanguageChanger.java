@@ -1,111 +1,61 @@
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import java.util.HashMap;
+
 
 public class LanguageChanger {
 
-    private HashMap<Character,Character> ukrainianToEnglish;
-    private HashMap<Character,Character> englishToUkrainian;
+    private String chosenLanguage;
+    private Language ukrainian;
+    private String chosenLanguage2;
+    private Language english;
+    private HashMap<Character,Character> translator;
 
     public LanguageChanger() {
-        ukrainianToEnglish = new HashMap<>();
-        englishToUkrainian = new HashMap<>();
 
-        ukrainianToEnglish.put('й','q');
-        ukrainianToEnglish.put('ц','w');
-        ukrainianToEnglish.put('у','e');
-        ukrainianToEnglish.put('к','r');
-        ukrainianToEnglish.put('е','t');
-        ukrainianToEnglish.put('н','y');
-        ukrainianToEnglish.put('г','u');
-        ukrainianToEnglish.put('ш','i');
-        ukrainianToEnglish.put('щ','o');
-        ukrainianToEnglish.put('з','p');
-        ukrainianToEnglish.put('х','[');
-        ukrainianToEnglish.put('ї',']');
-        ukrainianToEnglish.put('ф','a');
-        ukrainianToEnglish.put('і','s');
-        ukrainianToEnglish.put('в','d');
-        ukrainianToEnglish.put('а','f');
-        ukrainianToEnglish.put('п','g');
-        ukrainianToEnglish.put('р','h');
-        ukrainianToEnglish.put('о','j');
-        ukrainianToEnglish.put('л','k');
-        ukrainianToEnglish.put('д','l');
-        ukrainianToEnglish.put('ж',';');
-        ukrainianToEnglish.put('є','\'');
-        ukrainianToEnglish.put('я','z');
-        ukrainianToEnglish.put('ч','x');
-        ukrainianToEnglish.put('с','c');
-        ukrainianToEnglish.put('м','v');
-        ukrainianToEnglish.put('и','b');
-        ukrainianToEnglish.put('т','n');
-        ukrainianToEnglish.put('ь','m');
-        ukrainianToEnglish.put('б',',');
-        ukrainianToEnglish.put('ю','.');
-        ukrainianToEnglish.put('.','/');
-        ukrainianToEnglish.put('ы','s');
-
-        englishToUkrainian.put('q','й');
-        englishToUkrainian.put('w','ц');
-        englishToUkrainian.put('e','у');
-        englishToUkrainian.put('r','к');
-        englishToUkrainian.put('t','е');
-        englishToUkrainian.put('y','н');
-        englishToUkrainian.put('u','г');
-        englishToUkrainian.put('i','ш');
-        englishToUkrainian.put('o','щ');
-        englishToUkrainian.put('p','з');
-        englishToUkrainian.put('[','х');
-        englishToUkrainian.put(']','ї');
-        englishToUkrainian.put('a','ф');
-        englishToUkrainian.put('s','і');
-        englishToUkrainian.put('d','в');
-        englishToUkrainian.put('f','а');
-        englishToUkrainian.put('g','п');
-        englishToUkrainian.put('h','р');
-        englishToUkrainian.put('j','о');
-        englishToUkrainian.put('k','л');
-        englishToUkrainian.put('l','д');
-        englishToUkrainian.put(';','ж');
-        englishToUkrainian.put('\'','є');
-        englishToUkrainian.put('z','я');
-        englishToUkrainian.put('x','ч');
-        englishToUkrainian.put('c','с');
-        englishToUkrainian.put('v','м');
-        englishToUkrainian.put('b','и');
-        englishToUkrainian.put('n','т');
-        englishToUkrainian.put('m','ь');
-        englishToUkrainian.put(',','б');
-        englishToUkrainian.put('.','ю');
-        englishToUkrainian.put('/','.');
+        chosenLanguage = "ukrainian";
+        chosenLanguage2 = "english";
+        rewriteLanguages();
     }
 
-    public String changeToEnglish(String ukrainian) {
-        char [] ukr = ukrainian.toCharArray();
-        char [] engl = new char[ukr.length];
+    public String translate(String message) {
 
-        for (int i = 0;i < ukr.length;++i) {
-            try {
-                engl[i] = ukrainianToEnglish.get(ukr[i]);
+        char [] firstLanguage = message.toCharArray();
+        char [] secondLanguage = new char[firstLanguage.length];
+
+        for (int i = 0; i < firstLanguage.length; ++i) {
+            if(translator.containsKey(firstLanguage[i])) {
+                secondLanguage[i] = translator.get(firstLanguage[i]);
             }
-            catch (NullPointerException e) {
-                engl[i] = ukr[i];
-            }
+            else secondLanguage[i] = firstLanguage[i];
         }
-        return String.copyValueOf(engl);
+        String translated = String.copyValueOf(secondLanguage);
+        copyToClipboard(translated);
+        return translated;
     }
 
-    public String changeToUkrainian(String english) {
-        char [] engl = english.toCharArray();
-        char [] ukr = new char[engl.length];
-
-        for (int i = 0;i < engl.length;++i) {
-            try {
-                ukr[i] = englishToUkrainian.get(engl[i]);
-            }
-            catch (NullPointerException e) {
-                ukr[i] = engl[i];
-            }
+    private void rewriteLanguages() {
+        ukrainian = new Language(chosenLanguage);
+        english = new Language(chosenLanguage2);
+        translator = new HashMap<>();
+        for (int i = 0;i < ukrainian.getKeys().length; ++i) {
+            translator.put(ukrainian.getKeys()[i],english.getKeys()[i]);
         }
-        return String.copyValueOf(ukr);
+    }
+
+    private void copyToClipboard(String translated) {
+        ClipboardContent content = new ClipboardContent();
+        content.putString(translated);
+        Clipboard.getSystemClipboard().setContent(content);
+    }
+
+    public void setChosenLanguage(String chosenLanguage) {
+        this.chosenLanguage = chosenLanguage;
+        rewriteLanguages();
+    }
+
+    public void setChosenLanguage2(String chosenLanguage2) {
+        this.chosenLanguage2 = chosenLanguage2;
+        rewriteLanguages();
     }
 }
