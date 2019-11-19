@@ -19,8 +19,5 @@ public class Language {
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        catch (NullPointerException e) {
-//            //TODO
-//        }
     }
 }

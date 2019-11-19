@@ -38,7 +38,7 @@ public class DialogueWindow {
                 languageChanger.setChosenLanguage(wrongBox.getValue());
             });
             wrongBox.setValue(wrongBox.getItems().get(0));
-            correctBox = new ChoiceBox<String>(FXCollections.observableArrayList("english","ukrainian"));
+            correctBox = new ChoiceBox<String>(FXCollections.observableArrayList(getLanguages()));
             correctBox.setOnAction( event -> {
                 languageChanger.setChosenLanguage2(correctBox.getValue());
             });

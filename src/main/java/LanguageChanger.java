@@ -13,6 +13,7 @@ public class LanguageChanger {
 
     public LanguageChanger() {
 
+
         chosenLanguage = "ukrainian";
         chosenLanguage2 = "english";
         rewriteLanguages();
