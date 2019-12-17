@@ -1,5 +1,7 @@
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import lombok.Getter;
+
 import java.util.HashMap;
 
 
@@ -7,6 +9,7 @@ public class LanguageChanger {
 
     private String chosenLanguage;
     private Language ukrainian;
+    @Getter
     private String chosenLanguage2;
     private Language english;
     private HashMap<Character,Character> translator;
