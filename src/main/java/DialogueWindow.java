@@ -34,6 +34,7 @@ public class DialogueWindow {
     private ChoiceBox<String> correctBox;
     private LanguageChanger languageChanger;
     private Label translated;
+    private Button download;
 
 
     public DialogueWindow() {
@@ -45,25 +46,23 @@ public class DialogueWindow {
             translated = new Label();
             translated.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
             languageChanger = new LanguageChanger();
-
-            wrongBox = new ChoiceBox<String>(FXCollections.observableArrayList(getLanguages()));
-            wrongBox.setOnAction(event -> {
-                languageChanger.setChosenLanguage(wrongBox.getValue());
-            });
-            wrongBox.setValue(wrongBox.getItems().get(0));
+            download = new Button("Cкачати додаткові мови");
+            wrongBox = new ChoiceBox<String>();
+            wrongBox.setItems(FXCollections.observableArrayList(getLanguages()));
             correctBox = new ChoiceBox<String>(FXCollections.observableArrayList(getLanguages()));
-            correctBox.setOnAction( event -> {
-                languageChanger.setChosenLanguage2(correctBox.getValue());
-                scene.setFill(new ImagePattern(new Image("/flags/" + languageChanger.getChosenLanguage2() + ".png")));
-            });
-            correctBox.setValue(correctBox.getItems().get(1));
+            initBoxes();
             scene.heightProperty().addListener(e -> redraw());
             scene.widthProperty().addListener(e -> redraw());
     }
 
     public void change() {
-        layout.getChildren().addAll(stringToTranslate, translate, wrongBox, correctBox, translated);
+        layout.getChildren().addAll(stringToTranslate, translate, wrongBox, correctBox, translated, download);
         translate.setOnAction(event -> translated.setText(languageChanger.translate(stringToTranslate.getText())));
+        download.setOnAction(event -> {
+                new AddWindow().show();
+                setBoxes();
+            }
+        );
         scene.setOnKeyPressed(new Enter());
         window.setScene(scene);
         redraw();
@@ -73,7 +72,7 @@ public class DialogueWindow {
     private String[] getLanguages() {
         File folder = new File("languages/");
         String[] languages = folder.list();
-        for(int i = 0;languages !=null &&  i < languages.length; ++i) {
+        for(int i = 0; languages != null &&  i < languages.length; ++i) {
             languages[i] = languages[i].replace(".json","");
         }
         return languages;
@@ -93,11 +92,38 @@ public class DialogueWindow {
             height = scene.getHeight();
             width = scene.getWidth();
         }
-        correctBox.setLayoutY(height / 4);
-        stringToTranslate.setLayoutY(height / 2);
-        translate.setLayoutY(height / 4 * 3);
+        correctBox.setLayoutY(height / 8);
+        stringToTranslate.setLayoutY(height / 4);
+        translate.setLayoutY(height / 2);
+        download.setLayoutY(height / 4 * 3);
         translated.setLayoutY(height / 2);
         translated.setLayoutX(width / 2);
+    }
+
+
+    private void setBoxes() {
+        wrongBox.getItems().remove(0, wrongBox.getItems().size() - 1);
+        wrongBox.getItems().addAll(getLanguages());
+        wrongBox.getItems().remove(0);
+        correctBox.getItems().remove(0, correctBox.getItems().size() - 1);
+        correctBox.getItems().addAll(getLanguages());
+        correctBox.getItems().remove(0);
+        wrongBox.setValue(wrongBox.getItems().get(0));
+        correctBox.setValue(correctBox.getItems().get(1));
+    }
+
+    private void initBoxes() {
+        wrongBox.setOnAction(event -> {
+            if (wrongBox.getValue() != null)
+                languageChanger.setChosenLanguage(wrongBox.getValue());
+        });
+        wrongBox.setValue(wrongBox.getItems().get(0));
+        correctBox.setOnAction( event -> {
+            if (correctBox.getValue() != null)
+                languageChanger.setChosenLanguage2(correctBox.getValue());
+//            scene.setFill(new ImagePattern(new Image("/flags/" + languageChanger.getChosenLanguage2() + ".png")));
+        });
+        correctBox.setValue(correctBox.getItems().get(1));
     }
 
     private class Enter implements EventHandler<KeyEvent> {
