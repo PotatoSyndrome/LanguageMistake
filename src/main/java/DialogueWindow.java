@@ -7,13 +7,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -24,6 +22,7 @@ public class DialogueWindow {
 
     private static final int WINDOWWIDTH = 500;
     private static final int WINDOWHEIGHT = 300;
+    private static final int TEXTFIELDHEIGHT = 140;
 
     private Group layout;
     private Scene scene;
@@ -39,6 +38,7 @@ public class DialogueWindow {
 
     public DialogueWindow() {
             stringToTranslate = new TextField();
+        stringToTranslate.setPrefHeight(TEXTFIELDHEIGHT);
             window = new Stage();
             layout = new Group();
             scene = new Scene(layout, WINDOWWIDTH, WINDOWHEIGHT);
@@ -56,6 +56,7 @@ public class DialogueWindow {
     }
 
     public void change() {
+
         layout.getChildren().addAll(stringToTranslate, translate, wrongBox, correctBox, translated, download);
         translate.setOnAction(event -> translated.setText(languageChanger.translate(stringToTranslate.getText())));
         download.setOnAction(event -> {
@@ -86,7 +87,6 @@ public class DialogueWindow {
             Dimension sSize = Toolkit.getDefaultToolkit ().getScreenSize ();
             height = sSize.height;
             width  = sSize.width;
-
         }
         else {
             height = scene.getHeight();
@@ -94,8 +94,8 @@ public class DialogueWindow {
         }
         correctBox.setLayoutY(height / 8);
         stringToTranslate.setLayoutY(height / 4);
-        translate.setLayoutY(height / 2);
-        download.setLayoutY(height / 4 * 3);
+        translate.setLayoutY(height / 4 * 3);
+        download.setLayoutY(height / 8 * 7);
         translated.setLayoutY(height / 2);
         translated.setLayoutX(width / 2);
     }
