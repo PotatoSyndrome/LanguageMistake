@@ -59,7 +59,7 @@ public class AddWindow {
 
     private void write() {
         try {
-            String toWrite = mapper.readValue(new URL(LANGUAGE_PATH + languages.getValue()), String.class);
+            Language toWrite = mapper.readValue(new URL(LANGUAGE_PATH + languages.getValue()), Language.class);
             if(!languages.getSelectionModel().isEmpty())
                 mapper.writeValue(new File("languages/" + languages.getValue() + ".json"), toWrite);
         } catch (IOException e) {

@@ -1,11 +1,16 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import lombok.Getter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
 
 public class LanguageChanger {
+
+    private static ObjectMapper mapper = new ObjectMapper();
 
     private String chosenLanguage;
     private Language ukrainian;
@@ -39,8 +44,13 @@ public class LanguageChanger {
     }
 
     private void rewriteLanguages() {
-        ukrainian = new Language(chosenLanguage);
-        english = new Language(chosenLanguage2);
+        try {
+
+            ukrainian = mapper.readValue(new File("languages/" + chosenLanguage + ".json"),Language.class);
+            english  = mapper.readValue(new File("languages/" + chosenLanguage2 +  ".json"),Language.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         translator = new HashMap<>();
         for (int i = 0;i < ukrainian.getKeys().length; ++i) {
             translator.put(ukrainian.getKeys()[i],english.getKeys()[i]);
