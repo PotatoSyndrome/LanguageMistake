@@ -7,7 +7,7 @@ a {
     -fx-padding: 15px 30px;
     -fx-border-width: 1px;
     -fx-border-style:  solid;
-    -fx-border-image: linear-gradient(180deg, #14ffdf, #32dded, #2db7ff, #3d8acd);
+    -fx-border-image-color: linear-gradient(180deg, #14ffdf, #32dded, #2db7ff, #3d8acd);
     -fx-border-image-slice: 1;
     -fx-margin: 10px 20px;   font-family: 'Montserrat', sans-serif;
     -fx-text-transform: uppercase;
@@ -24,7 +24,7 @@ a:before {
     -fx-width: 100%;
     -fx-z-index: -1;
     -fx-color: white;
-    -fx-background: linear-gradient(180deg, #14ffdf, #32dded, #2db7ff, #3d8acd);
+    -fx-background-color: linear-gradient(180deg, #14ffdf, #32dded, #2db7ff, #3d8acd);
     -fx-transition: .8s cubic-bezier(.165,.84,.44,1);
 }
 a:hover {-fx-background: rgba(255,255,255,0);}
