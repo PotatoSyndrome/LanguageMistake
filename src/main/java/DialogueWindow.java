@@ -20,9 +20,10 @@ import java.io.File;
 
 public class DialogueWindow {
 
-    private static final int WINDOWWIDTH = 500;
-    private static final int WINDOWHEIGHT = 300;
-    private static final int TEXTFIELDHEIGHT = 140;
+    private static final int WINDOW_WIDTH = 700;
+    private static final int WINDOW_HEIGHT = 500;
+    private static final int TEXTFIELD_HEIGHT = 140;
+    private static final int TEXTFIELD_WIDTH = 250;
 
     private Group layout;
     private Scene scene;
@@ -38,19 +39,40 @@ public class DialogueWindow {
 
     public DialogueWindow() {
             stringToTranslate = new TextField();
-        stringToTranslate.setPrefHeight(TEXTFIELDHEIGHT);
+            stringToTranslate.setPrefHeight(TEXTFIELD_HEIGHT);
+            stringToTranslate.setPrefWidth(TEXTFIELD_WIDTH);
+
+
             window = new Stage();
+
             layout = new Group();
-            scene = new Scene(layout, WINDOWWIDTH, WINDOWHEIGHT);
+
+            scene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
+
             translate = new Button("Перекласти");
+            translate.setPrefWidth(100);
+
             translated = new Label();
             translated.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+            translated.setMaxWidth(TEXTFIELD_WIDTH);
+            translated.setMaxHeight(TEXTFIELD_HEIGHT);
+            translated.setWrapText(true);
+
             languageChanger = new LanguageChanger();
+
             download = new Button("Cкачати додаткові мови");
+            download.setPrefWidth(200);
+
             wrongBox = new ChoiceBox<String>();
             wrongBox.setItems(FXCollections.observableArrayList(getLanguages()));
+            wrongBox.setPrefWidth(100);
+
             correctBox = new ChoiceBox<String>(FXCollections.observableArrayList(getLanguages()));
+            correctBox.setPrefWidth(100);
+
             initBoxes();
+
+            scene.getStylesheets().add("/styles.css");
             scene.heightProperty().addListener(e -> redraw());
             scene.widthProperty().addListener(e -> redraw());
     }
@@ -92,12 +114,25 @@ public class DialogueWindow {
             height = scene.getHeight();
             width = scene.getWidth();
         }
-        correctBox.setLayoutY(height / 8);
-        stringToTranslate.setLayoutY(height / 4);
-        translate.setLayoutY(height / 4 * 3);
+
+        wrongBox.setLayoutY(height / 24);
+        wrongBox.setLayoutX(width / 2 - wrongBox.getPrefWidth() - 10);
+
+        correctBox.setLayoutY(height / 24);
+        correctBox.setLayoutX(width / 2 + 10);
+
+        stringToTranslate.setLayoutY(height / 6);
+        stringToTranslate.setLayoutX((width - stringToTranslate.getPrefWidth()) / 2);
+
+        translate.setLayoutY(stringToTranslate.getLayoutY() + stringToTranslate.getPrefHeight() + height / 24);
+        translate.setLayoutX((width - translate.getPrefWidth()) / 2);
+
+
         download.setLayoutY(height / 8 * 7);
-        translated.setLayoutY(height / 2);
-        translated.setLayoutX(width / 2);
+        download.setLayoutX((width - download.getPrefWidth()) / 2);
+
+        translated.setLayoutY(height * 7 / 12);
+        translated.setLayoutX(width / 3);
     }
 
 
