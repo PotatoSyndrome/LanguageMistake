@@ -7,10 +7,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -35,9 +34,14 @@ public class DialogueWindow {
     private LanguageChanger languageChanger;
     private Label translated;
     private Button download;
+    private AnchorPane root;
 
 
     public DialogueWindow() {
+            root = new AnchorPane();
+            root.setPrefWidth(WINDOW_WIDTH);
+            root.setPrefHeight(WINDOW_HEIGHT);
+
             stringToTranslate = new TextField();
             stringToTranslate.setPrefHeight(TEXTFIELD_HEIGHT);
             stringToTranslate.setPrefWidth(TEXTFIELD_WIDTH);
@@ -63,23 +67,24 @@ public class DialogueWindow {
             download = new Button("Cкачати додаткові мови");
             download.setPrefWidth(200);
 
-            wrongBox = new ChoiceBox<String>();
+            wrongBox = new ChoiceBox<>();
             wrongBox.setItems(FXCollections.observableArrayList(getLanguages()));
             wrongBox.setPrefWidth(100);
 
-            correctBox = new ChoiceBox<String>(FXCollections.observableArrayList(getLanguages()));
+            correctBox = new ChoiceBox<>(FXCollections.observableArrayList(getLanguages()));
             correctBox.setPrefWidth(100);
+
+            setBackground();
 
             initBoxes();
 
-            scene.getStylesheets().add("/styles.css");
             scene.heightProperty().addListener(e -> redraw());
             scene.widthProperty().addListener(e -> redraw());
     }
 
     public void change() {
 
-        layout.getChildren().addAll(stringToTranslate, translate, wrongBox, correctBox, translated, download);
+        layout.getChildren().addAll(root, stringToTranslate, translate, wrongBox, correctBox, translated, download);
         translate.setOnAction(event -> translated.setText(languageChanger.translate(stringToTranslate.getText())));
         download.setOnAction(event -> {
                 new AddWindow().show();
@@ -133,8 +138,22 @@ public class DialogueWindow {
 
         translated.setLayoutY(height * 7 / 12);
         translated.setLayoutX(width / 3);
+
+        root.setPrefHeight(height);
+        root.setPrefWidth(width);
     }
 
+    private void setBackground() {
+        Image image = new Image("fon.png");
+// new BackgroundSize(width, height, widthAsPercentage, heightAsPercentage, contain, cover)
+        BackgroundSize backgroundSize = new BackgroundSize(100, 100, true, true, false, false);
+// new BackgroundImage(image, repeatX, repeatY, position, size)
+        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+// new Background(images...)
+        Background background = new Background(backgroundImage);
+
+        root.setBackground(background);
+    }
 
     private void setBoxes() {
         wrongBox.getItems().remove(0, wrongBox.getItems().size() - 1);
