@@ -6,11 +6,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -22,13 +24,13 @@ public class DialogueWindow {
     private static final int WINDOW_WIDTH = 700;
     private static final int WINDOW_HEIGHT = 500;
     private static final int TEXTFIELD_HEIGHT = 140;
-    private static final int TEXTFIELD_WIDTH = 250;
+    private static final int TEXTFIELD_WIDTH = 450;
 
     private Group layout;
     private Scene scene;
     private Stage window;
     private Button translate;
-    private TextField stringToTranslate;
+    private TextArea stringToTranslate;
     private ChoiceBox<String> wrongBox;
     private ChoiceBox<String> correctBox;
     private LanguageChanger languageChanger;
@@ -42,9 +44,11 @@ public class DialogueWindow {
             root.setPrefWidth(WINDOW_WIDTH);
             root.setPrefHeight(WINDOW_HEIGHT);
 
-            stringToTranslate = new TextField();
+            stringToTranslate = new TextArea();
             stringToTranslate.setPrefHeight(TEXTFIELD_HEIGHT);
             stringToTranslate.setPrefWidth(TEXTFIELD_WIDTH);
+            stringToTranslate.setWrapText(true);
+            stringToTranslate.setFont(new Font("Rockwell Condensed", 20));
 
 
             window = new Stage();
@@ -54,18 +58,21 @@ public class DialogueWindow {
             scene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
 
             translate = new Button("Перекласти");
-            translate.setPrefWidth(100);
+            translate.setPrefWidth(200);
+            translate.setFont(new Font("Rockwell Condensed", 20));
 
             translated = new Label();
-            translated.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-            translated.setMaxWidth(TEXTFIELD_WIDTH);
-            translated.setMaxHeight(TEXTFIELD_HEIGHT);
+            translated.setPrefWidth(TEXTFIELD_WIDTH);
+            translated.setPrefHeight(TEXTFIELD_HEIGHT);
             translated.setWrapText(true);
+            translated.setStyle("-fx-border-color: white; -fx-background-color: transparent;");
+            translated.setFont(new Font("Rockwell Condensed", 20));
 
             languageChanger = new LanguageChanger();
 
             download = new Button("Cкачати додаткові мови");
-            download.setPrefWidth(200);
+            download.setPrefWidth(300);
+            download.setFont(new Font("Rockwell Condensed", 20));
 
             wrongBox = new ChoiceBox<>();
             wrongBox.setItems(FXCollections.observableArrayList(getLanguages()));
@@ -73,6 +80,7 @@ public class DialogueWindow {
 
             correctBox = new ChoiceBox<>(FXCollections.observableArrayList(getLanguages()));
             correctBox.setPrefWidth(100);
+            
 
             setBackground();
 
@@ -137,7 +145,7 @@ public class DialogueWindow {
         download.setLayoutX((width - download.getPrefWidth()) / 2);
 
         translated.setLayoutY(height * 7 / 12);
-        translated.setLayoutX(width / 3);
+        translated.setLayoutX((width - translated.getPrefWidth()) / 2);
 
         root.setPrefHeight(height);
         root.setPrefWidth(width);
